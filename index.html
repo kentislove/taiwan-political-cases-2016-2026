@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台灣三大政黨重大司法案件與國家治理檢視 (2016–2026)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dpp: '#1b7a42',
+            kmt: '#194982',
+            tpp: '#28c8c8',
+            slateBg: '#0f172a',
+            cardBg: '#1e293b'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .tab-active {
+      border-bottom: 3px solid #38bdf8;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- 頂部導覽列 -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/90 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div class="flex items-center space-x-3">
+        <span class="bg-gradient-to-r from-emerald-400 via-sky-400 to-cyan-400 text-slate-950 px-2.5 py-1 rounded text-xs font-black tracking-wider uppercase">專題調查</span>
+        <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+          <span>台灣政黨弊案與法治檢視</span>
+          <span class="text-xs text-slate-400 font-normal hidden md:inline-block">(2016–2026 十年客觀全景)</span>
+        </h1>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a href="#interactive-search" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-magnifying-glass text-cyan-400"></i>
+          <span>案件速查</span>
+        </a>
+        <a href="https://github.com/kentislove/taiwan-political-cases-2016-2026" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+          <i class="fa-brands fa-github text-slate-300"></i>
+          <span class="hidden sm:inline">開源專案</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 導覽切換標籤 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto border-t border-slate-800/80 text-sm scrollbar-none">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-3 font-medium text-slate-400 hover:text-slate-200 transition whitespace-nowrap tab-active">
+        <i class="fa-solid fa-chart-pie mr-1.5"></i>第四篇：總綱圖表與四分流
+      </button>
+      <button onclick="switchTab('dpp')" id="tab-dpp" class="tab-btn px-4 py-3 font-medium text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+        <i class="fa-solid fa-landmark mr-1.5 text-emerald-400"></i>第一篇：民進黨篇
+      </button>
+      <button onclick="switchTab('kmt')" id="tab-kmt" class="tab-btn px-4 py-3 font-medium text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+        <i class="fa-solid fa-building-columns mr-1.5 text-blue-400"></i>第二篇：國民黨篇
+      </button>
+      <button onclick="switchTab('tpp')" id="tab-tpp" class="tab-btn px-4 py-3 font-medium text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+        <i class="fa-solid fa-users mr-1.5 text-cyan-400"></i>第三篇：民眾黨篇
+      </button>
+    </div>
+  </header>
+
+  <!-- 主視覺 Header Banner -->
+  <section class="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto text-center space-y-4">
+      <div class="inline-flex items-center gap-2 bg-slate-800/80 border border-slate-700/80 text-slate-300 px-3 py-1 rounded-full text-xs">
+        <i class="fa-solid fa-scale-balanced text-amber-400"></i>
+        <span>基於司法院判決書、檢察署起訴書、監察院調查報告與審計公文</span>
+      </div>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug">
+        台灣三大政黨重大司法案件與制度治理檢視
+      </h2>
+      <p class="text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
+        恪守現代法治國家「無罪推定原則」與「證據裁判原則」，嚴格區分<strong class="text-amber-400">判決定讞</strong>、<strong class="text-sky-400">審理中</strong>、<strong class="text-purple-400">偵查中</strong>與<strong class="text-emerald-400">查無不法簽結／不起訴確定</strong>，呈現台灣政黨政治在中央執政、地方自治與立法遊說中的法治全景。
+      </p>
+    </div>
+  </section>
+
+  <!-- 內容區塊 Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-12">
+
+    <!-- ============================================== -->
+    <!-- TAB 1: 總綱圖表與四分流 (第四篇) -->
+    <!-- ============================================== -->
+    <div id="content-overview" class="tab-content space-y-10">
+      
+      <!-- 統計圖表區 (Chart.js) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- 圖表 1: 案件司法進度四分流 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-slate-200 flex items-center gap-2 text-sm sm:text-base">
+              <i class="fa-solid fa-gavel text-sky-400"></i>三大政黨核心案件司法階段統計
+            </h3>
+            <span class="text-xs text-slate-400">截至2026年11月</span>
+          </div>
+          <div class="h-64 sm:h-72 flex items-center justify-center">
+            <canvas id="chartJudicialStatus"></canvas>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            * 統計說明：依據本專題收錄之代表性指標個案分流。定讞案件多包含早期立案歷經多年終審確定之案；一二審審理中則涵蓋近期高度矚目之重大首長與民代涉貪案。
+          </p>
+        </div>
+
+        <!-- 圖表 2: 涉案金流與公帑影響性質特徵 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-slate-200 flex items-center gap-2 text-sm sm:text-base">
+              <i class="fa-solid fa-coins text-amber-400"></i>涉案金流與公帑影響型態剖析
+            </h3>
+            <span class="text-xs text-slate-400">法律定性分類</span>
+          </div>
+          <div class="h-64 sm:h-72 flex items-center justify-center">
+            <canvas id="chartFinancialImpact"></canvas>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            * 說明：嚴格區分「公帑直接受損/呆帳（如慶富獵雷艦聯貸、如興投資）」、「收賄與私利所得（判決定讞或起訴求刑）」與「政策容積特許之市場商業開發估值（如京華城20%容獎）」。
+          </p>
+        </div>
+      </div>
+
+      <!-- 三大政黨多維面向對比分析表 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-5">
+        <div class="border-b border-slate-800 pb-3 flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-table-cells text-cyan-400"></i>三大面向橫向交叉對比表
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">國家治理、行政官員、金流貪污三大面向剖析</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm text-slate-300 border-collapse">
+            <thead>
+              <tr class="bg-slate-800/80 text-slate-200 border-b border-slate-700">
+                <th class="p-3 font-semibold w-28 sm:w-36">評析維度</th>
+                <th class="p-3 font-semibold text-emerald-400 border-l border-slate-800"><i class="fa-solid fa-circle text-[8px] mr-1"></i>民主進步黨（中央執政）</th>
+                <th class="p-3 font-semibold text-blue-400 border-l border-slate-800"><i class="fa-solid fa-circle text-[8px] mr-1"></i>中國國民黨（地方執政／國會）</th>
+                <th class="p-3 font-semibold text-cyan-400 border-l border-slate-800"><i class="fa-solid fa-circle text-[8px] mr-1"></i>台灣民眾黨（首都／地方／國會）</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 leading-relaxed">
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-bold text-slate-200 bg-slate-900/60">國家治理面向<br><span class="text-[11px] text-slate-500 font-normal">政策推進與專案採購</span></td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">大規模國家轉型之監理漏洞：</strong><br>
+                  • 再生能源（光電）開發引起地方黑金與利益糾葛。<br>
+                  • 民生緊急物資（雞蛋、疫苗）採購遭質疑行政程序黑箱與公帑銷毀浪費。<br>
+                  • 國有基金投資（如興）及國防採購（慶富獵雷艦）把關失靈。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">地方自治監管與公共安全危機：</strong><br>
+                  • 竹北天坑案突顯地方建案施工監理失衡與公安放水風險。<br>
+                  • 重大防災工程（南投風災重建）淪為結構性索賄標的。<br>
+                  • 地方公共資產契約移轉（基隆東岸商場）引發法治程序與政治對立。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">首都重大開發裁量界線與法治界線：</strong><br>
+                  • 京華城案衝擊地方都市計畫容積管制之法定標準與公平性。<br>
+                  • 北士科招標、魚果市場減項發包等重大招商案遭質疑政策讓利過甚。<br>
+                  • 標榜清廉透明施政與實際行政決策程序產生高度落差。
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-bold text-slate-200 bg-slate-900/60">行政官員面向<br><span class="text-[11px] text-slate-500 font-normal">首長、政務官與事務官</span></td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">政務首長與公營事業主管廉政失守：</strong><br>
+                  • 行政院前副院長／前市長（鄭文燦）涉土地自辦重劃收賄起訴。<br>
+                  • 國營轉投資（台鹽綠能陳啟昱）背信掏空造成鉅額虧損。<br>
+                  • 地方局長（陳凱凌）收賄入獄定讞；特勤軍官利用元首通關走私私菸。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">地方首長權限行使與主管實質圖利：</strong><br>
+                  • 縣長（林姿妙）涉農地免稅圖利與不明財產一審判刑。<br>
+                  • 工務主管（江良淵）默許建商違法施工77天遭判刑。<br>
+                  • 前縣長（李朝卿）主導跨局處長期向營造包商索取回扣定讞。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">民選首長核心指導與合議制功能弱化：</strong><br>
+                  • 前市長（柯文哲）透過便當會實質指導都審與容獎遭起訴一審判刑。<br>
+                  • 副市長、都發局長等首長承擔行政及法律調查。<br>
+                  • 縣市首長因起訴或一審判刑引發停職與代理爭端。
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-bold text-slate-200 bg-slate-900/60">金流貪污面向<br><span class="text-[11px] text-slate-500 font-normal">受賄對價、公款私用</span></td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">政商利益分潤、詐貸與補助詐領：</strong><br>
+                  • 土地重劃收賄與借款爭端（500萬元）。<br>
+                  • 綠能土地開發私下索取分潤。<br>
+                  • 進口專案業者浮報價格詐領補助（6,085萬元）。<br>
+                  • 詐欺集團滲透與立委受賄收受不正利益（400餘萬元）。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">工程回扣、國會遊說對價與核銷：</strong><br>
+                  • 災後工程分案索取10%-15%回扣（總額逾3,000萬元）。<br>
+                  • 綠能外商透過白手套行賄議長（2,000萬元）及議員。<br>
+                  • 國會議員涉收賄施壓行政機關（廖國棟790萬、鄭天財700萬）。<br>
+                  • 地方議長涉不實發票核銷公帑業務費。
+                </td>
+                <td class="p-3 border-l border-slate-800">
+                  <strong class="text-slate-100">政治獻金轉移、私法人關聯與公積金：</strong><br>
+                  • 容積獎勵疑涉人頭政治獻金與收賄對價（1,710萬元）。<br>
+                  • 競選政治獻金轉移私營公關公司（逾6,000萬元）及挪用基金會。<br>
+                  • 監察院裁罰並沒入違法政治獻金（5,579萬餘元）。<br>
+                  • 國會助理費提撥公積金（二審認定實質補助改判貪污無罪）。
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 四大司法進度全覽表格 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-5">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-balance-scale text-amber-400"></i>司法四分流總清單（定讞／審理中／偵查中／簽結）
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- 1. 定讞 -->
+          <div class="bg-slate-800/60 border border-rose-900/60 rounded-lg p-4 space-y-2.5">
+            <div class="flex items-center justify-between text-rose-400 font-bold border-b border-rose-900/40 pb-2 text-sm">
+              <span><i class="fa-solid fa-lock mr-1.5"></i>已判決定讞入監</span>
+              <span class="text-xs bg-rose-950 text-rose-300 px-1.5 py-0.5 rounded">終審確定</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>李朝卿風災工程回扣案</strong>：最高法院駁回上訴，判刑 <strong>21年2月</strong> 定讞執行。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>陳凱凌經發局長收賄案</strong>：貪污、洗錢判刑 <strong>8年</strong> 定讞入監。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>賴素如台北雙子星案</strong>：收受前金收賄判刑 <strong>7年6月</strong> 定讞（已假釋）。
+              </li>
+              <li>
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>慶富獵雷艦詐貸案</strong>：承包商陳慶男判刑 <strong>25年</strong> 定讞。
+              </li>
+            </ul>
+          </div>
+
+          <!-- 2. 審理中 (上訴一二審) -->
+          <div class="bg-slate-800/60 border border-sky-900/60 rounded-lg p-4 space-y-2.5">
+            <div class="flex items-center justify-between text-sky-400 font-bold border-b border-sky-900/40 pb-2 text-sm">
+              <span><i class="fa-solid fa-hourglass-half mr-1.5"></i>法院審理中 (爭訟中)</span>
+              <span class="text-xs bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded">一二審</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-cyan-400 font-bold">[民眾黨]</span> <strong>柯文哲京華城／政治獻金</strong>：一審判 <strong>17年</strong>，二審高院審理中。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-cyan-400 font-bold">[民眾黨]</span> <strong>高虹安助理費案</strong>：二審撤銷貪污<strong>改判無罪</strong>，檢方上訴最高法院中。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>鄭文燦華亞科重劃案</strong>：起訴求刑12年，桃園地院實質審理中。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>陳歐珀收賄案</strong>：一審判 <strong>16年</strong>，高等法院二審審理中。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>林姿妙農地免稅洗錢案</strong>：一審判 <strong>12年6月</strong>，二審辯論終結待宣判。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>楊文科／江良淵天坑案</strong>：一審楊文科無罪、江良淵判 <strong>6年6月</strong>，檢方上訴。
+              </li>
+              <li>
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>沈宗隆綠能案</strong>：一審認罪判 <strong>3年6月</strong>；議員王又民判 <strong>9年6月</strong> 上訴中。
+              </li>
+            </ul>
+          </div>
+
+          <!-- 3. 偵查中 -->
+          <div class="bg-slate-800/60 border border-purple-900/60 rounded-lg p-4 space-y-2.5">
+            <div class="flex items-center justify-between text-purple-400 font-bold border-b border-purple-900/40 pb-2 text-sm">
+              <span><i class="fa-solid fa-search mr-1.5"></i>偵查中案件 (未起訴)</span>
+              <span class="text-xs bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded">檢察署分案</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-cyan-400 font-bold">[民眾黨]</span> <strong>北士科地上權招商案</strong>：台北地檢署分案調查評選過程與權利金設定。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-cyan-400 font-bold">[民眾黨]</span> <strong>魚果市場減項發包案</strong>：地檢署調閱工程追加預算公文偵查中。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-cyan-400 font-bold">[民眾黨]</span> <strong>台智光警察局監視器網路案</strong>：釐清專案費率簽核與行政裁量責任。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>新竹市立棒球場工程案</strong>：統包契約與驗收未清案件持續偵查中。
+              </li>
+              <li>
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>謝典霖彰化議事業務費案</strong>：涉私宴發票核銷，檢調偵辦羈押禁見中。
+              </li>
+            </ul>
+          </div>
+
+          <!-- 4. 簽結與不起訴 -->
+          <div class="bg-slate-800/60 border border-emerald-900/60 rounded-lg p-4 space-y-2.5">
+            <div class="flex items-center justify-between text-emerald-400 font-bold border-b border-emerald-900/40 pb-2 text-sm">
+              <span><i class="fa-solid fa-check-circle mr-1.5"></i>查無不法／不起訴確定</span>
+              <span class="text-xs bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded">司法釐清</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>高端疫苗採購與EUA案</strong>：60餘件圖利告發案經台北地檢署清查金流後，<strong>查無具體不法事證全數簽結</strong>。
+              </li>
+              <li class="border-b border-slate-800/60 pb-1.5">
+                <span class="text-emerald-400 font-bold">[民進黨]</span> <strong>超思進口蛋政務官告發案</strong>：前部長陳吉仲等人係緊急平抑物價政策裁量，<strong>查無圖利不法簽結</strong>（業者浮報價格另案起訴）。
+              </li>
+              <li>
+                <span class="text-blue-400 font-bold">[國民黨]</span> <strong>基隆東岸商場招商點交案</strong>：NET指控謝國樑強盜與圖利案，經檢方兩度偵查駁回再議，<strong>不起訴處分確定</strong>；行政法院駁回國賠確定。
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 核心改革路徑與結構性省思 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg space-y-4">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-lightbulb text-amber-400"></i>制度省思：台灣廉政法制的三大關鍵改革路徑
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs sm:text-sm text-slate-300">
+          <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700/60 space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">1. 終結特許專案的黑箱免責</h4>
+            <p class="leading-relaxed">
+              不論是中央的緊急採購、綠能審查，抑或地方政府的重大容積特許，凡涉及數十億至百億元公共利益分配者，必須建立<strong>「法定合約事前強制公開」</strong>與實質外部專家聯審制度，杜絕以行政指導、便當會替代法規程序的漏洞。
+            </p>
+          </div>
+          <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700/60 space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">2. 健全國會遊說與助理法制</h4>
+            <p class="leading-relaxed">
+              SOGO案與立委收賄案件顯示遊說法長年形同具文，而高虹安案二審改判更凸顯助理費性質的法規模糊。立法院應推動實質線上即時遊說申報，並重新修訂公費助理支給條例，明定核銷與加班規範，杜絕暗室金流。
+            </p>
+          </div>
+          <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700/60 space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">3. 建立政黨與營利實體防火牆</h4>
+            <p class="leading-relaxed">
+              民眾黨政治獻金風波敲響民主警鐘。政黨法必須明確限制黨職高層設立營利私法人承攬黨內業務，嚴格杜絕透過公關費、肖像權授權或公益基金會挪移政治獻金，落實外部獨立會計師實質稽核制度。
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 2: 民進黨篇 (第一篇) -->
+    <!-- ============================================== -->
+    <div id="content-dpp" class="tab-content hidden space-y-8">
+      
+      <!-- 形象圖展示卡片 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-3">
+        <div class="md:col-span-1 bg-slate-950 flex items-center justify-center p-2">
+          <img src="images/cover_dpp.jpg" alt="民進黨篇專題配圖" class="w-full h-auto object-cover rounded-lg shadow-md max-h-72">
+        </div>
+        <div class="md:col-span-2 p-6 flex flex-col justify-center space-y-3">
+          <span class="text-xs font-bold text-emerald-400 tracking-wider uppercase bg-emerald-950/80 border border-emerald-800/60 w-fit px-2.5 py-1 rounded">專題第一篇</span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-white">執政十二年檢視：2016至2026年民進黨重大司法弊案、政商爭議與制度省思</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            檢視民進黨執政期間，因推動國家能源轉型、民生緊急物資調度及大型公共建設計畫，伴隨龐大公共資源集中而衍生的監理真空、政商利益糾葛與公營事業內控缺失。
+          </p>
+        </div>
+      </div>
+
+      <!-- 詳細內容分區 -->
+      <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+        
+        <!-- 一、首長與民代涉貪 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-emerald-500 pl-3">一、 首長、民意代表與政商網絡涉貪案件</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 前海基會董事長、前桃園市長鄭文燦涉收賄案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>檢方指控：</strong>桃園地檢署指控鄭文燦於市長任內，在「變更林口特定區計畫－工五工業區擴大方案」中收受業者交付之500萬元賄賂，依《貪污治罪條例》起訴並求刑12年。<br>
+                <strong>當事人抗辯：</strong>鄭文燦始終否認收賄，主張款項為友人借貸及事後退回之政治獻金，案件目前正由桃園地方法院實質合議審理中。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 前立委陳歐珀涉im.B詐騙集團與收賄案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>司法進度：</strong>台北地方法院一審判處陳歐珀有期徒刑16年、其妻判處4年6月（上訴二審中）。法院認定其長期無償使用詐騙集團房舍車輛，並收受物流業者賄賂逾400萬元推動修法及詐領助理費。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">3. 總統專機國安局特勤私菸案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>司法進度：</strong>台灣高等法院二審依公務員以公用運輸工具裝載違禁品及圖利罪，判處侍衛室少校吳宗憲有期徒刑6年（上訴最高法院中）。本案重創元首維安體系紀律。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 二、能源與光電 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-emerald-500 pl-3">二、 能源轉型架構下之地方光電與綠能利益糾葛</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 台鹽綠能公司虧損與高層背信掏空案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>案情與審理：</strong>台南地檢署指控前董事長陳啟昱等人涉嫌勾結民股下包業者，簽訂不平等專案合約並索取土地分潤，導致公營背景之台鹽綠能嚴重虧損。檢方依《證券交易法》特別背信罪起訴，目前由法院審理中。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 台南學甲光電審查弊端與88槍擊案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>司法結果：</strong>前台南市經發局長陳凱凌因受賄、買春接受招待、財產來源不明等罪，判處有期徒刑8年定讞入監；光電利益糾葛誘發學甲88槍擊案，市府後續全面改革審查機制改採聯合線上審查。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三、專案採購與公共工程 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-emerald-500 pl-3">三、 民生專案採購、國有基金投資與公共工程管理爭議</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 農業部專案進口雞蛋（超思專案）爭議</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>調查結論：</strong>監察院針對畜產會行政程序瑕疵糾正農業部。台北地檢署偵結認定前部長陳吉仲等官員係為平抑物價之緊急政策裁量，查無圖利不法予以簽結；惟起訴超思負責人涉浮報進口價格詐領6,085萬元補助款。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 國發基金投資如興紡織案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>司法進展：</strong>國發基金注資近15億元後如興爆發財報不實掏空，董事長陳仕修潛逃遭通緝；投保中心與國發會對失職董監事及簽證會計師進行民事求償。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">3. 慶富獵雷艦採購詐貸案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>定讞判決：</strong>慶富董座陳慶男詐貸公股行庫逾63億元，遭判刑25年定讞入監。本案跨越馬政府得標與蔡政府聯貸，公股行庫多名主管遭懲戒。
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 3: 國民黨篇 (第二篇) -->
+    <!-- ============================================== -->
+    <div id="content-kmt" class="tab-content hidden space-y-8">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg space-y-3">
+        <span class="text-xs font-bold text-blue-400 tracking-wider uppercase bg-blue-950/80 border border-blue-800/60 w-fit px-2.5 py-1 rounded">專題第二篇</span>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-white">在野格局與地方執政檢視：2016至2026年國民黨重大司法弊案、政商爭議與制度省思</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          國民黨在中央處於在野，但在多數縣市長期主政並掌握地方議會主導權。其司法案件主要集中於地方首長行政裁量權之行使、重大公共工程監理、國會法案遊說對價與議會綠能綁樁。
+        </p>
+      </div>
+
+      <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+        
+        <!-- 一、地方首長 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-blue-500 pl-3">一、 地方縣市首長與行政主管涉貪案件</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 宜蘭縣長林姿妙涉農地免稅圖利與洗錢案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>審理進度：</strong>宜蘭地方法院一審依圖利、財產來源不明及洗錢等罪判處林姿妙有期徒刑12年6月、褫奪公權6年並停職；台灣高等法院二審已於2026年11月辯論終結，預定2027年春季宣判。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 新竹縣「豐采520」天坑案（楊文科與工務主管）</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>一審裁判：</strong>新竹地院認定楊文科直接圖利故意事證不足判決<strong>無罪</strong>；但認定工務處長江良淵默許建商違法施工77天圖利近4,000萬元，判處江良淵6年6月徒刑（檢方已上訴）。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">3. 前南投縣長李朝卿重大災後重建工程收取回扣案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>定讞執行：</strong>最高法院認定李朝卿觸犯98項收賄罪，於莫拉克等風災災後工程向包商收取10%-15%回扣，判處有期徒刑 <strong>21年2月</strong> 定讞入監。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 二、國會立委 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-blue-500 pl-3">二、 中央立法委員收賄、遊說圖利與助理費案</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 跨黨派國會集體收賄案（SOGO經營權與土地開發案）</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>二審判決：</strong>高等法院二審維持廖國棟判刑8年6月；惟認定陳超明收受之100萬元無具體職務對價關係，逆轉改判陳超明<strong>無罪</strong>（檢方上訴最高法院中）。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 立委顏寬恒助理費與房產案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>更審審理：</strong>一二審判處7年10月，最高法院於2026年5月認為助理任用與薪資流向調查未盡，撤銷貪污罪發回台中高分院進行更一審審理。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">3. 立委鄭天財涉收受綠能業者賄賂案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>檢方起訴：</strong>台北地檢署起訴鄭天財涉按月收受業者逾700萬元賄賂並核發特助證件施壓行政機關，具體求刑10年以上，台北地院審理中。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三、地方議會 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-blue-500 pl-3">三、 地方議會高層涉貪、綠能綁樁與風紀案</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 雲林縣議會前議長沈宗隆綠能行賄案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>一審宣判：</strong>沈宗隆認罪並繳回2,000萬元所得，一審判處3年6月；不認罪之議員王又民判刑9年6月（上訴二審審理中）。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 彰化縣議長謝典霖公款業務費案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>偵辦進展：</strong>彰化地檢署指控謝典霖涉嫌以不實發票核銷公款特別費，檢調聲押禁見獲准，案件持續偵查中。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">3. 基隆東岸商場產權與點交案（不起訴確定）</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>司法確定：</strong>NET控告謝國樑強盜圖利案，基隆地檢署與高檢署認定市府依法收回公共資產，駁回再議<strong>不起訴處分確定</strong>；最高行政法院判決駁回NET損害賠償確定。
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: 民眾黨篇 (第三篇) -->
+    <!-- ============================================== -->
+    <div id="content-tpp" class="tab-content hidden space-y-8">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg space-y-3">
+        <span class="text-xs font-bold text-cyan-400 tracking-wider uppercase bg-cyan-950/80 border border-cyan-800/60 w-fit px-2.5 py-1 rounded">專題第三篇</span>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-white">新興第三勢力與首長治理檢視：2019至2026年台灣民眾黨重大司法案件、公款爭議與制度省思</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          台灣民眾黨以清廉改革為創黨旗幟，先後執政台北市與新竹市。其司法爭端主要聚集於首都大型都市計畫容積獎勵法律紅線、2024總統大選政治獻金與私營公關公司／基金會財務關聯，以及國會助理費核銷實務。
+        </p>
+      </div>
+
+      <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+        
+        <!-- 一、柯文哲台北市政開發 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-cyan-500 pl-3">一、 柯文哲台北市長任內之市政與開發案件</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 台北市京華城容積獎勵違法圖利與收賄案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>一審判決：</strong>台北地院認定柯文哲透過行政指導創設20%容積獎勵圖利威京集團逾百億元，並期約收賄1,710萬元，合併判處有期徒刑 <strong>17年</strong>、褫奪公權6年。全案上訴台灣高等法院二審審理中。<br>
+                <strong>當事人答辯：</strong>柯文哲堅持無罪，強調都委會為專家合議制，市長從未干預技術細節，指責檢方缺乏直接金流證據。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 北士科、魚果市場、南港轉運站BOT及台智光案</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>偵查中：</strong>台北市議會專案小組移送多起重大招商與工程案，台北地檢署分案深入偵查中，前市府團隊發布聲明強調均為合法公開招標。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 二、總統大選政治獻金 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-cyan-500 pl-3">二、 2024總統大選政治獻金、木可公關與眾望基金會案</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">1. 假帳申報不實與木可公關侵占指控</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>案情與審理：</strong>檢方指控競總透過木可公關收取高額授權金侵占政治獻金逾6,000萬元、挪用眾望基金會善款827萬元。案件併入一審判決有罪；上訴二審後，李文宗、李文娟兄妹於高院庭訊改口認罪，柯文哲仍堅持無罪。
+              </p>
+            </div>
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">2. 監察院行政裁罰與沒入</strong>
+              <p class="text-xs text-slate-400 mt-1">
+                <strong>處分確定：</strong>監察院認定違反《政治獻金法》，裁處行政罰鍰並正式沒入5,579萬餘元違法資金。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三、高虹安助理費案 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h4 class="text-base font-bold text-white border-l-4 border-cyan-500 pl-3">三、 新竹市長高虹安立委任內助理費案（二審逆轉改判）</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800/40 p-4 rounded-lg border border-slate-800">
+              <strong class="text-slate-100 text-sm">司法重大轉折：</strong><br>
+              • <strong>一審判刑：</strong>台北地院於2024年判處貪污罪有期徒刑7年4月並停職市長。<br>
+              • <strong>二審改判：</strong>台灣高等法院於2025年12月認定助理費具「實質補助」性質且助理有實際加班，撤銷貪污罪<strong>改判無罪</strong>，僅偽造文書判刑6月可易科罰金；高虹安於12月18日依法復職市長。<br>
+              • <strong>終審審理：</strong>高檢署已於2026年1月就貪污無罪部分上訴最高法院審理中。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 案件即時搜尋與過濾區塊 (Interactive Filter) -->
+    <!-- ============================================== -->
+    <section id="interactive-search" class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-filter text-sky-400"></i>案件快速檢索與多重篩選器
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">即時依政黨、司法狀態或關鍵字過濾案件</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <input type="text" id="searchInput" placeholder="輸入人名或案件關鍵字..." oninput="filterCases()" class="bg-slate-950 border border-slate-700 text-xs text-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:border-sky-500 w-44 sm:w-60">
+        </div>
+      </div>
+
+      <!-- 篩選按鈕列 -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-400 font-semibold mr-1">政黨：</span>
+        <button onclick="setPartyFilter('all')" class="party-btn bg-sky-600 text-white px-2.5 py-1 rounded transition" data-party="all">全部</button>
+        <button onclick="setPartyFilter('民進黨')" class="party-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-party="民進黨">民主進步黨</button>
+        <button onclick="setPartyFilter('國民黨')" class="party-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-party="國民黨">中國國民黨</button>
+        <button onclick="setPartyFilter('民眾黨')" class="party-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-party="民眾黨">台灣民眾黨</button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-400 font-semibold mr-1">狀態：</span>
+        <button onclick="setStatusFilter('all')" class="status-btn bg-sky-600 text-white px-2.5 py-1 rounded transition" data-status="all">全部</button>
+        <button onclick="setStatusFilter('定讞')" class="status-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-status="定讞">判決定讞</button>
+        <button onclick="setStatusFilter('審理中')" class="status-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-status="審理中">審理中 (一二審)</button>
+        <button onclick="setStatusFilter('偵查中')" class="status-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-status="偵查中">偵查中</button>
+        <button onclick="setStatusFilter('簽結／不起訴')" class="status-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition" data-status="簽結／不起訴">簽結／不起訴</button>
+      </div>
+
+      <!-- 案件卡片列表 Grid -->
+      <div id="casesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+        <!-- 動態由 JavaScript 生成 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 頁尾宣告與來源 -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-8 px-4 sm:px-6 lg:px-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="space-y-1">
+        <p class="text-slate-400 font-medium">台灣三大政黨重大司法案件與制度治理檢視 (2016–2026)</p>
+        <p>法治原則宣告：本研究所有未定讞案件均受憲政保障之「無罪推定原則」拘束，依客觀法庭攻防陳列。</p>
+      </div>
+      <div class="text-slate-500">
+        資料引據：司法院裁判書、最高檢察署、監察院糾正報告、中央通訊社、公共電視台
+      </div>
+    </div>
+  </footer>
+
+  <!-- 互動腳本與資料陣列 -->
+  <script>
+    // 案件資料庫陣列
+    const casesData = [
+      { party: '民進黨', title: '鄭文燦華亞科重劃收賄案', status: '審理中', role: '前副院長／前市長', money: '指控收賄 500 萬元', note: '檢方起訴求刑12年，桃園地院實質審理中；鄭文燦主張款項屬借貸政治獻金。' },
+      { party: '民進黨', title: '陳歐珀物流收賄與im.B案', status: '審理中', role: '前立法委員', money: '收賄逾 400 萬、詐領助理費', note: '台北地院一審判刑 16 年，台灣高等法院二審審理中。' },
+      { party: '民進黨', title: '總統專機特勤私菸案', status: '審理中', role: '前侍衛室少校軍官', money: '逃漏稅與走私 9,797 條香菸', note: '高等法院二審判處吳宗憲有期徒刑 6 年，上訴最高法院中。' },
+      { party: '民進黨', title: '台鹽綠能高層背信掏空案', status: '審理中', role: '前董事長陳啟昱', money: '造成虧損數億元、開發分潤', note: '檢方依證券交易法特別背信罪起訴，台南地院審理中。' },
+      { party: '民進黨', title: '台南市經發局長陳凱凌涉貪案', status: '定讞', role: '前經發局長', money: '收賄 180 萬、財產來源不明', note: '貪污定讞判處有期徒刑 8 年入監執行。' },
+      { party: '民進黨', title: '超思專案進口雞蛋案', status: '簽結／不起訴', role: '前農業部長陳吉仲等', money: '銷毀過期蛋公帑約 3.5 億元', note: '陳吉仲等官員查無圖利簽結；業者浮報價格詐領6,085萬遭起訴。' },
+      { party: '民進黨', title: '高端疫苗採購與EUA審查案', status: '簽結／不起訴', role: '前衛福部政務首長', money: '採購金額約 40 億元', note: '在野告發60餘案，台北地檢署清查金流查無不法全數簽結。' },
+      { party: '民進黨', title: '國發基金如興紡織投資案', status: '審理中', role: '如興董事長陳仕修', money: '國發基金注資約 15 億元', note: '陳仕修通緝中；國發基金啟動向失職董監事與會計師求償。' },
+      { party: '民進黨', title: '慶富造船獵雷艦詐貸案', status: '定讞', role: '民間承包商陳慶男', money: '詐貸公股行庫逾 63 億元', note: '陳慶男判刑 25 年定讞入監；公股行庫失職人員遭彈劾處分。' },
+      { party: '民進黨', title: '新竹市立棒球場工程案', status: '偵查中', role: '前市府工務團隊', money: '統包工程約 12 億元', note: '監察院提出糾正，新竹地檢署針對契約變更與工程缺失偵辦中。' },
+      
+      { party: '國民黨', title: '南投縣長災後工程回扣案', status: '定讞', role: '前南投縣長李朝卿', money: '收取回扣總額逾 3,000 萬元', note: '最高法院駁回上訴，犯98項貪污罪，判刑 21 年 2 月定讞入監。' },
+      { party: '國民黨', title: '宜蘭縣長農地免稅圖利案', status: '審理中', role: '宜蘭縣長林姿妙 (停職)', money: '不明財產 3,250 萬、免稅圖利', note: '宜蘭地院一審判刑 12 年 6 月，高等法院二審已辯論終結待宣判。' },
+      { party: '國民黨', title: '竹北天坑工務處長圖利案', status: '審理中', role: '縣長楊文科／處長江良淵', money: '江良淵不明財產逾千萬、圖利工期', note: '一審楊文科無罪，工務處長江良淵判刑 6 年 6 月，檢方上訴中。' },
+      { party: '國民黨', title: '國會集體收賄SOGO經營權案', status: '審理中', role: '前立委廖國棟／立委陳超明', money: '廖國棟790萬、陳超明100萬', note: '高院二審廖國棟維持 8 年 6 月；陳超明認定無對價逆轉改判無罪，檢方上訴中。' },
+      { party: '國民黨', title: '立委顏寬恒助理費與房產案', status: '審理中', role: '立法委員顏寬恒', money: '起訴詐領助理費 108 萬元', note: '最高法院撤銷貪污罪判決發回更審，台中高分院更一審審理中。' },
+      { party: '國民黨', title: '立委鄭天財涉收受綠能賄賂案', status: '審理中', role: '立法委員鄭天財', money: '收賄逾 700 萬元', note: '北檢依貪污罪起訴求刑10年以上，台北地院審理中。' },
+      { party: '國民黨', title: '雲林縣議會達德綠能收賄案', status: '審理中', role: '前議長沈宗隆／議員王又民', money: '沈宗隆2,000萬、王又民225萬', note: '一審沈宗隆認罪判 3 年 6 月；王又民判刑 9 年 6 月上訴中。' },
+      { party: '國民黨', title: '台北雙子星案索賄案', status: '定讞', role: '前台北市議員賴素如', money: '索賄 1,000 萬、收受 100 萬', note: '最高法院駁回上訴判刑 7 年 6 月定讞，已假釋出獄。' },
+      { party: '國民黨', title: '彰化縣議長謝典霖公款業務費案', status: '偵查中', role: '彰化縣議長謝典霖', money: '私宴發票核銷公款爭端', note: '彰化地檢署聲押禁見獲准，案件持續偵查中。' },
+      { party: '國民黨', title: '基隆東岸商場招商點交案', status: '簽結／不起訴', role: '基隆市長謝國樑', money: '市場合約產權與增建權益', note: '檢方兩度偵查駁回再議，不起訴處分確定；最高行政法院判市府勝訴確定。' },
+
+      { party: '民眾黨', title: '柯文哲京華城容積獎勵案', status: '審理中', role: '前台北市長柯文哲', money: '容積獎勵百億估值、指控受賄1,710萬', note: '台北地院一審判刑 17 年、褫奪公權6年，台灣高等法院二審審理中。' },
+      { party: '民眾黨', title: '2024總統大選政治獻金案', status: '審理中', role: '柯文哲／李文宗／李文娟', money: '木可侵占逾6,000萬、眾望827萬', note: '一審判決有罪併入17年刑期；二審李文宗兄妹認罪，柯文哲無罪答辯。' },
+      { party: '民眾黨', title: '監察院政治獻金裁罰沒入', status: '定讞', role: '柯文哲競選總部', money: '沒入資金 5,579 萬餘元', note: '監察院認定嚴重違反政治獻金法，裁處沒入與罰鍰行政處分確定。' },
+      { party: '民眾黨', title: '新竹市長高虹安助理費案', status: '審理中', role: '新竹市長高虹安', money: '檢方起訴詐領 11.6 萬元', note: '一審判刑7年4月，二審撤銷貪污改判無罪（偽造文書判6月可易科罰金），檢方上訴中。' },
+      { party: '民眾黨', title: '北士科T17/T18地上權招標案', status: '偵查中', role: '前台北市府團隊', money: '招標權利金與投資計畫免審', note: '台北市議會移送，台北地檢署分案深入偵查中。' },
+      { party: '民眾黨', title: '第一果菜與萬大魚類市場案', status: '偵查中', role: '前台北市府團隊', money: '減項發包後續追加工程款', note: '台北市議會專案調查，台北地檢署分案偵查中。' },
+      { party: '民眾黨', title: '台智光警察監視器網路費率案', status: '偵查中', role: '前台北市府團隊', money: '專案網路費率簽核裁量', note: '台北地檢署持續調閱公文調查中。' }
+    ];
+
+    // 切換頁籤邏輯
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('tab-active');
+        el.classList.add('text-slate-400');
+      });
+
+      const activeContent = document.getElementById('content-' + tabId);
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('tab-active');
+        activeBtn.classList.remove('text-slate-400');
+      }
+    }
+
+    // 篩選器狀態
+    let currentParty = 'all';
+    let currentStatus = 'all';
+
+    function setPartyFilter(party) {
+      currentParty = party;
+      document.querySelectorAll('.party-btn').forEach(btn => {
+        if (btn.getAttribute('data-party') === party) {
+          btn.className = 'party-btn bg-sky-600 text-white px-2.5 py-1 rounded transition';
+        } else {
+          btn.className = 'party-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition';
+        }
+      });
+      filterCases();
+    }
+
+    function setStatusFilter(status) {
+      currentStatus = status;
+      document.querySelectorAll('.status-btn').forEach(btn => {
+        if (btn.getAttribute('data-status') === status) {
+          btn.className = 'status-btn bg-sky-600 text-white px-2.5 py-1 rounded transition';
+        } else {
+          btn.className = 'status-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-2.5 py-1 rounded transition';
+        }
+      });
+      filterCases();
+    }
+
+    function filterCases() {
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const grid = document.getElementById('casesGrid');
+      grid.innerHTML = '';
+
+      const filtered = casesData.filter(item => {
+        const matchParty = (currentParty === 'all') || (item.party === currentParty);
+        const matchStatus = (currentStatus === 'all') || (item.status === currentStatus);
+        const matchKeyword = (!keyword) || 
+          item.title.toLowerCase().includes(keyword) || 
+          item.role.toLowerCase().includes(keyword) || 
+          item.note.toLowerCase().includes(keyword) ||
+          item.money.toLowerCase().includes(keyword);
+        return matchParty && matchStatus && matchKeyword;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full py-8 text-center text-slate-500 text-xs">查無符合條件的案件紀錄。</div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        let partyColor = 'text-emerald-400 border-emerald-900/60 bg-emerald-950/20';
+        let partyBadge = 'bg-emerald-900 text-emerald-200';
+        if (item.party === '國民黨') {
+          partyColor = 'text-blue-400 border-blue-900/60 bg-blue-950/20';
+          partyBadge = 'bg-blue-900 text-blue-200';
+        } else if (item.party === '民眾黨') {
+          partyColor = 'text-cyan-400 border-cyan-900/60 bg-cyan-950/20';
+          partyBadge = 'bg-cyan-900 text-cyan-200';
+        }
+
+        let statusBadge = 'bg-sky-900 text-sky-200';
+        if (item.status === '定讞') statusBadge = 'bg-rose-900 text-rose-200';
+        if (item.status === '偵查中') statusBadge = 'bg-purple-900 text-purple-200';
+        if (item.status === '簽結／不起訴') statusBadge = 'bg-emerald-900 text-emerald-200';
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border ${partyColor} space-y-2.5 transition hover:scale-[1.01]`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <span class="px-2 py-0.5 rounded font-bold ${partyBadge}">${item.party}</span>
+            <span class="px-2 py-0.5 rounded font-semibold ${statusBadge}">${item.status}</span>
+          </div>
+          <h4 class="font-bold text-slate-100 text-sm leading-snug">${item.title}</h4>
+          <div class="text-xs text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-tag text-slate-500"></i>
+            <span>${item.role}</span>
+          </div>
+          <div class="text-xs text-amber-300 font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-coins text-amber-400"></i>
+            <span>${item.money}</span>
+          </div>
+          <p class="text-xs text-slate-300 border-t border-slate-800/80 pt-2 leading-relaxed">
+            ${item.note}
+          </p>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 初始化渲染
+    window.addEventListener('DOMContentLoaded', () => {
+      filterCases();
+      renderCharts();
+    });
+
+    // 繪製統計圖表
+    function renderCharts() {
+      // 1. 司法進度圖表 (Bar Chart)
+      const ctx1 = document.getElementById('chartJudicialStatus').getContext('2d');
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['民主進步黨', '中國國民黨', '台灣民眾黨'],
+          datasets: [
+            {
+              label: '已定讞判刑',
+              data: [2, 2, 1], // 代表性案件數
+              backgroundColor: '#f43f5e'
+            },
+            {
+              label: '法院審理中 (爭訟中)',
+              data: [4, 6, 3],
+              backgroundColor: '#38bdf8'
+            },
+            {
+              label: '偵查中 (尚未起訴)',
+              data: [1, 1, 3],
+              backgroundColor: '#c084fc'
+            },
+            {
+              label: '查無不法簽結／不起訴',
+              data: [2, 1, 0],
+              backgroundColor: '#34d399'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#94a3b8', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              ticks: { color: '#cbd5e1' },
+              grid: { color: '#334155' }
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              ticks: { color: '#cbd5e1' },
+              grid: { color: '#334155' }
+            }
+          }
+        }
+      });
+
+      // 2. 涉案金流與公帑影響性質 (Doughnut Chart)
+      const ctx2 = document.getElementById('chartFinancialImpact').getContext('2d');
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            '公帑直接損失／呆帳 (民進黨篇：慶富/如興/蛋銷毀)',
+            '個人收賄與私利所得 (跨黨派首長與民代涉貪金額)',
+            '特許政策之市場商業開發估值 (民眾黨篇：京華城容積20%)',
+            '違反政治獻金法裁罰沒入 (民眾黨篇：監察院處分)'
+          ],
+          datasets: [{
+            data: [81.5, 0.95, 100, 0.55], // 概略代表性比例數量級
+            backgroundColor: [
+              '#f97316', // 橘色代表公帑損失
+              '#ef4444', // 紅色代表收賄私利
+              '#06b6d4', // 青色代表容積特許估值
+              '#a855f7'  // 紫色代表獻金沒入
+            ],
+            borderColor: '#0f172a',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#94a3b8',
+                font: { size: 10 },
+                boxWidth: 12
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return ' ' + context.label;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

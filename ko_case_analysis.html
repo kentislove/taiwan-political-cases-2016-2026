@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>司法天秤上的交鋒：柯文哲京華城案與重大政要司法案件法理差距解析</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-dark: #0f172a;
+            --accent: #d97706;
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --success: #15803d;
+            --warning: #b45309;
+            --danger: #b91c1c;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 頁首標題區 */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "⚖️";
+            position: absolute;
+            right: 20px;
+            bottom: -15px;
+            font-size: 110px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .badge-top {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 2rem;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        p.subtitle {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            max-width: 850px;
+        }
+
+        /* 資料引用聲明盒 */
+        .source-box {
+            background: #ffffff;
+            border-left: 5px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            box-shadow: var(--shadow);
+        }
+
+        .source-box strong {
+            color: var(--text-main);
+        }
+
+        /* 快速切換導覽列 */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+        }
+
+        /* 三大靈魂提問卡片區 */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 24px;
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .plain-box {
+            background: #eff6ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            border-left: 3px solid var(--primary-light);
+            font-size: 0.92rem;
+            color: #1e40af;
+        }
+
+        .plain-box strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* 案例卡片橫向大對決 */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .case-header {
+            padding: 18px 20px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .case-header.ko { background: linear-gradient(135deg, #0284c7, #0369a1); }
+        .case-header.cheng { background: linear-gradient(135deg, #059669, #047857); }
+        .case-header.ma { background: linear-gradient(135deg, #475569, #334155); }
+        .case-header.lin { background: linear-gradient(135deg, #d97706, #b45309); }
+
+        .case-tag {
+            font-size: 0.78rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .case-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.93rem;
+        }
+
+        .item-label {
+            font-weight: bold;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .highlight-text {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .verdict-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            text-align: center;
+        }
+
+        .verdict-tag.investigating { background: #fef3c7; color: #92400e; }
+        .verdict-tag.indicted { background: #fee2e2; color: #991b1b; }
+        .verdict-tag.innocent { background: #dcfce7; color: #166534; }
+        .verdict-tag.grand { background: #e0e7ff; color: #3730a3; }
+
+        /* 綜合深度對照大表格 */
+        .table-container {
+            background: white;
+            border-radius: 14px;
+            overflow-x: auto;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: var(--text-main);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .key-difference {
+            background: #fffbeb;
+            color: #b45309;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* 結論思考區 */
+        .conclusion-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 40px;
+        }
+
+        .conclusion-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .con-box {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .con-box h4 {
+            color: #fcd34d;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .con-box p {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* 響應式優化 */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            header { padding: 25px 20px; }
+            h1 { font-size: 1.5rem; }
+            .grid-3, .case-grid { grid-template-columns: 1fr; }
+            th, td { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 頁首標題區 -->
+    <header>
+        <div class="badge-top">⚖️ 公共政策與司法專題深度研析</div>
+        <h1>柯文哲京華城案與重大政要司法案件法理差距解析</h1>
+        <p class="subtitle">從圖利罪直接故意、收賄對價鏈條到首長實質影響力：全方位解碼台灣司法在政務官重大決策上的審判尺度</p>
+    </header>
+
+    <!-- 資料來源聲明 -->
+    <div class="source-box">
+        <strong>📚 權威法理引據與來源聲明：</strong>
+        本文分析嚴格基於司法院裁判書系統（最高法院110年度台上大字第5217號刑事裁定、台北地方法院107年度金重訴字第25號判決、台北地院與高等法院歷次刑事裁定）、台北與桃園地方檢察署公開起訴書、法務部廉政署統計報告及《月旦裁判時報》法學專論。秉持無罪推定與法律中立原則，客觀呈現裁判標準之異同。
+    </div>
+
+    <!-- 快速導覽列 -->
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="scrollToSection('questions')">💡 法官審判三大靈魂拷問</button>
+        <button class="nav-btn" onclick="scrollToSection('cases')">🔍 四大指標案件橫向大比拼</button>
+        <button class="nav-btn" onclick="scrollToSection('matrix')">📊 司法實務對照總表</button>
+        <button class="nav-btn" onclick="scrollToSection('takeaways')">🏛️ 公民法律核心常識筆記</button>
+    </div>
+
+    <!-- 第一單元：三大核心靈魂拷問 -->
+    <div id="questions">
+        <div class="section-title">三分鐘看懂！法官審判政務官的三大核心靈魂拷問</div>
+        
+        <div class="grid-3">
+            <!-- 考驗一 -->
+            <div class="question-card">
+                <div class="card-num">1</div>
+                <div class="card-title">是「違法圖利」還是「行政裁量」？</div>
+                <p style="font-size:0.9rem; color:var(--text-sub);">法律依據：貪污治罪條例第6條第1項第4款（圖利罪）</p>
+                <div class="plain-box">
+                    <strong>白話核心解碼：</strong>
+                    公務員只要政策做錯就算犯罪嗎？絕對不是！法律規定圖利罪必須是公務員<strong>「明知道這項法令不行，卻故意直接違法去做」</strong>。如果是見解爭議、過失或相信幕僚專業，在刑法上是不罰的。
+                </div>
+                <p style="font-size:0.9rem;">
+                    <strong>本案最大爭點：</strong>京華城自擬細部計畫準用都更容積獎勵20%到底有沒有法源依據？柯文哲究竟是「尊重都委會專家合議決策」，還是「早已知情違法卻指示放行」？
+                </p>
+            </div>
+
+            <!-- 考驗二 -->
+            <div class="question-card">
+                <div class="card-num">2</div>
+                <div class="card-title">是「收賄對價」還是「合法政治獻金」？</div>
+                <p style="font-size:0.9rem; color:var(--text-sub);">法律依據：貪污治罪條例第4/5條（職務上行為或違背職務收賄罪）</p>
+                <div class="plain-box">
+                    <strong>白話核心解碼：</strong>
+                    任何人都可以捐款給政黨或政治人物，要怎麼證明那筆錢是「買通官員的賄賂」？檢察官必須證明<strong>「一手交錢、一手辦事」的直接因果對價關係</strong>，不能單靠「有捐錢」就直接推論是賄款。
+                </div>
+                <p style="font-size:0.9rem;">
+                    <strong>本案最大爭點：</strong>威京集團相關人員拆分匯入的政治獻金、以及基金會或公關公司的資金往來，能否在法庭上被拿出鐵證，證實與市府給予容積獎勵之間存在直接期約關係？
+                </p>
+            </div>
+
+            <!-- 考驗三 -->
+            <div class="question-card">
+                <div class="card-num">3</div>
+                <div class="card-title">市長一句話，算不算干預獨立專家？</div>
+                <p style="font-size:0.9rem; color:var(--text-sub);">法理概念：法定職權說 相較於 實質影響力說</p>
+                <div class="plain-box">
+                    <strong>白話核心解碼：</strong>
+                    都市計畫委員會是合議制的獨立審議機關，市長依法不能命令委員怎麼投票。但市長如果派人溝通、要求排審或撤換反對派委員，算不算法律上的「實質施壓干預」？
+                </div>
+                <p style="font-size:0.9rem;">
+                    <strong>本案最大爭點：</strong>最高法院大法庭裁定已確立「只要利用職務實質影響力都算公務行為」。本案將決定市長往後能不能再用「獨立委員會合議決議」作為法律免責護身符。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二單元：四大指標案例橫向大比拼 -->
+    <div id="cases">
+        <div class="section-title">四大指標司法案例橫向大對照</div>
+
+        <div class="case-grid">
+            <!-- 柯文哲案 -->
+            <div class="case-card">
+                <div class="case-header ko">
+                    <span>柯文哲 京華城案</span>
+                    <span class="case-tag">台北市長</span>
+                </div>
+                <div class="case-body">
+                    <div>
+                        <div class="item-label">涉案主旨</div>
+                        <div class="highlight-text">京華城容積率自560%增加至840%（額外給予20%獎勵）</div>
+                    </div>
+                    <div>
+                        <div class="item-label">核心罪名與狀態</div>
+                        <span class="verdict-tag investigating">圖利罪、違背職務收賄罪偵辦中</span>
+                    </div>
+                    <div>
+                        <div class="item-label">金流型態</div>
+                        <div>合法政治獻金名義申報、智庫基金會捐款與公關公司轉帳（金流對價性待法院審理嚴格檢驗）</div>
+                    </div>
+                    <div>
+                        <div class="item-label">辯護核心主張</div>
+                        <div>無都市計畫專業，完全信賴都市計畫委員會專家合議審議與公務員行政流程，無圖利直接故意。</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 鄭文燦案 -->
+            <div class="case-card">
+                <div class="case-header cheng">
+                    <span>鄭文燦 華亞科案</span>
+                    <span class="case-tag">桃園市長</span>
+                </div>
+                <div class="case-body">
+                    <div>
+                        <div class="item-label">涉案主旨</div>
+                        <div class="highlight-text">林口工五擴大都市計畫自辦市地重劃案協調推動</div>
+                    </div>
+                    <div>
+                        <div class="item-label">核心罪名與狀態</div>
+                        <span class="verdict-tag indicted">不違背職務收賄罪（檢方偵結起訴求刑）</span>
+                    </div>
+                    <div>
+                        <div class="item-label">金流型態</div>
+                        <div>公事包直接裝載500萬元現金進入官邸交付，且有行動通訊監聽紀錄時序銜接，隨後親自開會推進。</div>
+                    </div>
+                    <div>
+                        <div class="item-label">法理對比亮點</div>
+                        <div class="key-difference">具備經典收賄要件：現鈔在手＋監聽閉環，對價關係明確，檢方不需繞道圖利罪。</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 馬英九三中案 -->
+            <div class="case-card">
+                <div class="case-header ma">
+                    <span>馬英九 三中案</span>
+                    <span class="case-tag">台北市長 / 黨主席</span>
+                </div>
+                <div class="case-body">
+                    <div>
+                        <div class="item-label">涉案主旨</div>
+                        <div class="highlight-text">中視、中影、中廣等黨營事業股權與不動產交易處分</div>
+                    </div>
+                    <div>
+                        <div class="item-label">核心罪名與狀態</div>
+                        <span class="verdict-tag innocent">證券交易法特別背信罪（一、二審皆獲判無罪）</span>
+                    </div>
+                    <div>
+                        <div class="item-label">金流型態</div>
+                        <div>無個人私人口袋金流流入，著眼於廣電法期限前處分黨產之整體組織法律與轉型需求。</div>
+                    </div>
+                    <div>
+                        <div class="item-label">法理對比亮點</div>
+                        <div class="key-difference">法院採納商業判斷法則與行政信賴原則：有諮詢律師與會計師，無不法圖利直接故意。</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 林益世案 -->
+            <div class="case-card">
+                <div class="case-header lin">
+                    <span>林益世 地勇案</span>
+                    <span class="case-tag">行政院秘書長 / 立委</span>
+                </div>
+                <div class="case-body">
+                    <div>
+                        <div class="item-label">涉案主旨</div>
+                        <div class="highlight-text">向中鋼下游廠商地勇公司索取款項協助續約爐下渣契約</div>
+                    </div>
+                    <div>
+                        <div class="item-label">核心罪名與狀態</div>
+                        <span class="verdict-tag grand">最高法院大法庭統一見解確立（確立實質影響力說）</span>
+                    </div>
+                    <div>
+                        <div class="item-label">金流型態</div>
+                        <div>直接索取並收受數千萬元現金，包含藏匿於池塘與防潮箱等實質賄款。</div>
+                    </div>
+                    <div>
+                        <div class="item-label">法理對比亮點</div>
+                        <div class="key-difference">終結法定職權說：公務員只要利用職務影響力介入公私事項，即成立職務收賄犯罪。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第三單元：綜合對照矩陣大表格 -->
+    <div id="matrix">
+        <div class="section-title">全方位司法實務對照矩陣表</div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">評估維度</th>
+                        <th style="width: 25%;">柯文哲 京華城案</th>
+                        <th style="width: 20%;">鄭文燦 華亞科案</th>
+                        <th style="width: 20%;">馬英九 三中案</th>
+                        <th style="width: 20%;">林益世 地勇案</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>指控核心罪名</strong></td>
+                        <td>貪污治罪條例：圖利罪、違背職務收賄罪</td>
+                        <td>貪污治罪條例：不違背職務收賄罪</td>
+                        <td>證券交易法：特別背信罪、非常規交易罪</td>
+                        <td>貪污治罪條例：職務上行為要求收受賄賂罪</td>
+                    </tr>
+                    <tr>
+                        <td><strong>金流查證型態</strong></td>
+                        <td>透過多筆法定政治獻金、基金會捐款與公司金流，正由檢方追查對價因果鏈。</td>
+                        <td>500萬元現金裝於黑色手提袋交付，有監聽通聯紀錄時序緊密吻合。</td>
+                        <td>無任何私人收賄金流，款項全數入黨產帳戶，處分符合廣電法合規目標。</td>
+                        <td>直接索討並收受數千萬元現金，錄音譯文完整記載索賄金額與對話。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>主觀犯意判斷標準</strong></td>
+                        <td><strong>爭點所在：</strong>辯方主張信賴都委會共識決；法院更裁認容積欠缺明確授權且首長知悉疑慮。</td>
+                        <td><strong>直接故意明確：</strong>收受現金後立即於市府召開會議督促局處加速自辦重劃。</td>
+                        <td><strong>法院判無罪關鍵：</strong>採納商業判斷法則，首長信賴律師、會計師查核報告，無犯罪故意。</td>
+                        <td><strong>實質施壓明確：</strong>以立委與秘書長職務之預算與人事影響力，施壓國營企業續約。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>合議制機關責任劃分</strong></td>
+                        <td>都市計畫委員會屬合議制專家機關，市長指令是否架空獨立審議成攻防核心。</td>
+                        <td>市長親自主導跨局處專案協調會議，直接對行政幕僚進行政策指示。</td>
+                        <td>黨營事業董事會與中投公司專業經理人充分評估議價，首長並未擅改交易。</td>
+                        <td>直接向中鋼與中聯主管實質施壓，不受合議制機關審查保障。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>對台灣司法的指標意義</strong></td>
+                        <td>考驗地方政府自創容積獎勵之裁量權界線，以及政治獻金轉化為收賄對價之舉證門檻。</td>
+                        <td>展現傳統現鈔賄賂案件中，檢警透過行動通訊科技監查與時序比對之成熟偵辦模式。</td>
+                        <td>確立首長決策若有專業合規團隊背書，即便事後證明非最優，亦受商業判斷法則保護。</td>
+                        <td>最高法院大法庭確立實質影響力說，統一了台灣長期以來對公務員收賄職務範圍的法律見解。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第四單元：公民法治核心常識筆記 -->
+    <div id="takeaways">
+        <div class="conclusion-card">
+            <h3>🏛️ 司法公民課：非法律人一定要懂的三大判斷常識</h3>
+            <p style="color: #94a3b8; font-size: 0.95rem;">看懂重大政治司法案件，不要被新聞標題牽著走，學會用法院與法學專家的思維看門道：</p>
+
+            <div class="conclusion-grid">
+                <div class="con-box">
+                    <h4>1. 圖利與便民，界線到底在哪裡？</h4>
+                    <p>公務員積極幫人民解決問題叫「便民」；但如果<strong>「明知違背法律法令，讓特定人獲得不法好處」</strong>就是圖利。柯案未來一審法院最大的焦點，就是判斷多給京華城的20%容積，到底是合法的都市計畫細部規劃彈性裁量，還是違背法令的圖利犯罪。</p>
+                </div>
+                <div class="con-box">
+                    <h4>2. 政治獻金絕不能隨便等同賄賂</h4>
+                    <p>如果政治人物收到合法申報的政治獻金就算收賄，那全台灣沒有任何政治人物敢收捐款。法律上要證明收賄，檢察官必須提出鐵證，證明<strong>「雙方事前或事後約定：因為你給了我這個好處，所以我才幫你辦這件事」</strong>，這種對價因果鏈條是法庭上最嚴格的試金石。</p>
+                </div>
+                <div class="con-box">
+                    <h4>3. 尊重專業委員會，不能變成擋箭牌</h4>
+                    <p>過去首長常說「都是專家審的，我只是依法蓋章」。但如果首長在開會前早就下達具體指示、要求限期通過、甚至把反對的專家換掉，在現代最高法院採納的「實質影響力說」之下，首長依然要為幕後的實質操作負起刑事責任！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>本單頁法理分析文件專供公共議題學習與公民思辨教育使用｜遵循無罪推定原則與司法院確定裁判法理標準</p>
+        <p style="margin-top: 6px; font-size: 0.8rem; color: #94a3b8;">最後更新紀錄時間：2026年11月</p>
+    </footer>
+
+</div>
+
+<script>
+    function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // 更新按鈕樣式
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>
